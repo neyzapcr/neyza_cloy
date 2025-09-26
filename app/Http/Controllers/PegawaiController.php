@@ -24,7 +24,6 @@ class PegawaiController extends Controller
         $current_semester = 3;
         $future_goal = "Menjadi orang yang bisa";
 
-        // Info semester
         if ($current_semester <= 3) {
             $info = "Masih Awal, Kejar TAK";
         } else {
