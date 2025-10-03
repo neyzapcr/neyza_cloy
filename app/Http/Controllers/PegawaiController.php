@@ -41,7 +41,7 @@ class PegawaiController extends Controller
             'future_goal' => $future_goal,
         ];
 
-        return view('pegawai', $data);
+        return view('pegawai', $data);  
     }
 
 
