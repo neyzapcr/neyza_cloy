@@ -89,10 +89,14 @@
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->phone }}</td>
                                         <td class="d-flex gap-1">
-                                          
+
                                             <a href="{{ route('pelanggan.edit', $item->pelanggan_id) }}" class="btn btn-info btn-sm">
                                                 Edit
                                             </a>
+                                            <a href="{{ route('pelanggan.show', $item->pelanggan_id) }}" class="btn btn-info btn-sm">
+    Detail Pelanggan
+</a>
+
                                             <form action="{{ route('pelanggan.destroy', $item->pelanggan_id) }}" method="POST" style="display:inline">
                                                 @csrf
                                                 @method('DELETE')

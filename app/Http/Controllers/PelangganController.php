@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+ use Illuminate\Support\Facades\Storage;
 
 class PelangganController extends Controller
 {
@@ -13,7 +14,7 @@ class PelangganController extends Controller
     {
         $filterableColumns = ['gender'];
         $searchableColumns = ['first_name', 'last_name', 'email', 'phone'];
-        
+
         $data['dataPelanggan'] = Pelanggan::filter($request, $filterableColumns)
         ->search($request, $searchableColumns)
         ->paginate(10)
@@ -34,29 +35,39 @@ class PelangganController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //dd($request->all());
+{
+    $pelanggan = Pelanggan::create($request->only([
+        'first_name','last_name','birthday','gender','email','phone'
+    ]));
 
-        $data['first_name'] = $request->first_name;
-        $data['last_name']  = $request->last_name;
-        $data['birthday']   = $request->birthday;
-        $data['gender']     = $request->gender;
-        $data['email']      = $request->email;
-        $data['phone']      = $request->phone;
-
-        Pelanggan::create($data);
-
-        return redirect()->route('pelanggan.index')->with('success', 'Penambahan Data Berhasil!');
-
+    if ($request->hasFile('foto')) {
+        foreach ($request->file('foto') as $file) {
+            $file->store("pelanggan/{$pelanggan->pelanggan_id}", "public");
+        }
     }
+
+    return redirect()->route('pelanggan.index')
+        ->with('success', 'Penambahan Data Berhasil!');
+}
+
+
 
     /**
      * Display the specified resource.
      */
-    public function show(Pelanggan $pelanggan)
-    {
-        //
-    }
+
+public function show($id)
+{
+    $dataPelanggan = Pelanggan::findOrFail($id);
+
+    // scan folder foto berdasarkan pelanggan_id
+    $folder = "pelanggan/" . $dataPelanggan->pelanggan_id;
+    $fotos = Storage::disk('public')->files($folder);
+
+    return view('admin.pelanggan.detail', compact('dataPelanggan', 'fotos'));
+}
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -71,21 +82,29 @@ class PelangganController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $pelanggan_id = $id;
-        $pelanggan = Pelanggan::findOrfail($pelanggan_id);
+{
+    $pelanggan = Pelanggan::findOrFail($id);
 
-        $pelanggan->first_name = $request->first_name;
-        $pelanggan->last_name = $request->last_name;
-        $pelanggan->birthday = $request->birthday;
-        $pelanggan->gender = $request->gender;
-        $pelanggan->email = $request->email;
-        $pelanggan->phone = $request->phone;
+    $pelanggan->first_name = $request->first_name;
+    $pelanggan->last_name  = $request->last_name;
+    $pelanggan->birthday   = $request->birthday;
+    $pelanggan->gender     = $request->gender;
+    $pelanggan->email      = $request->email;
+    $pelanggan->phone      = $request->phone;
 
-        $pelanggan->save();
-        return redirect()->route('pelanggan.index')->with('success', 'Perubahan Data Berhasil!');
-
+    // simpan foto ke folder pelanggan/{id}
+    if ($request->hasFile('foto')) {
+        foreach ($request->file('foto') as $file) {
+            $file->store("pelanggan/{$pelanggan->pelanggan_id}", "public");
+        }
     }
+
+    $pelanggan->save();
+
+    return redirect()->route('pelanggan.show', $id)
+        ->with('success', 'Perubahan Data Berhasil!');
+}
+
 
     /**
      * Remove the specified resource from storage.
