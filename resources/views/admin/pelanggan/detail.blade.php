@@ -20,9 +20,6 @@
             <p class="text-muted mb-0">Informasi lengkap data pelanggan.</p>
         </div>
         <div class="d-flex gap-2">
-            <a href="{{ route('pelanggan.edit', $dataPelanggan->pelanggan_id) }}" class="btn btn-warning">
-                Edit
-            </a>
             <a href="{{ route('pelanggan.index') }}" class="btn btn-primary">
                 Kembali
             </a>
@@ -30,7 +27,8 @@
     </div>
 
     <div class="row g-3">
-        {{-- Info Pelanggan --}}
+
+        {{-- INFO PELANGGAN --}}
         <div class="col-lg-5">
             <div class="card shadow-sm rounded-4 border-0 h-100">
                 <div class="card-body">
@@ -67,37 +65,33 @@
                         <span class="text-muted">Phone</span>
                         <span class="fw-semibold">{{ $dataPelanggan->phone ?? '-' }}</span>
                     </div>
-
                 </div>
             </div>
         </div>
 
-        {{-- Foto Pelanggan --}}
+        {{-- FOTO + FILE PENDUKUNG --}}
         <div class="col-lg-7">
             <div class="card shadow-sm rounded-4 border-0 h-100">
                 <div class="card-body">
 
+                    {{-- FOTO PELANGGAN (lihat saja) --}}
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="mb-0">Foto Pelanggan</h5>
-                        <small class="text-muted">{{ count($fotos) }} file</small>
+                        <small class="text-muted">{{ count($fotos) }} foto</small>
                     </div>
 
                     @if(count($fotos))
-                        <div class="d-flex flex-wrap gap-2">
+                        <div class="d-flex flex-wrap gap-2 mb-4">
                             @foreach($fotos as $i => $foto)
-
-                                {{-- Thumbnail (klik -> modal preview) --}}
                                 <div class="border rounded-3 overflow-hidden shadow-sm"
                                      style="width:120px; height:120px;">
                                     <img src="{{ asset('storage/'.$foto) }}"
-                                         alt="foto pelanggan"
                                          class="w-100 h-100"
                                          style="object-fit:cover; cursor:pointer;"
                                          data-bs-toggle="modal"
                                          data-bs-target="#modalFoto{{ $i }}">
                                 </div>
 
-                                {{-- Modal Preview (tanpa script) --}}
                                 <div class="modal fade" id="modalFoto{{ $i }}" tabindex="-1" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                         <div class="modal-content rounded-4 border-0 shadow">
@@ -109,11 +103,99 @@
                                         </div>
                                     </div>
                                 </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-muted mb-4">Belum ada foto pelanggan.</div>
+                    @endif
+
+                    <hr>
+
+                    {{-- FILE PENDUKUNG (sesuai requirement) --}}
+                    <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+                        <h5 class="mb-0">File Pendukung</h5>
+                        <small class="text-muted">{{ $files->count() }} file</small>
+                    </div>
+
+                    {{-- form upload file pendukung --}}
+                    <form action="{{ route('pelanggan.file.upload', $dataPelanggan->pelanggan_id) }}"
+                          method="POST" enctype="multipart/form-data" class="mb-3">
+                        @csrf
+                        <input type="hidden" name="ref_table" value="pelanggan">
+                        <input type="hidden" name="ref_id" value="{{ $dataPelanggan->pelanggan_id }}">
+
+                        <div class="input-group w-100">
+                            <input type="file" name="files[]" class="form-control" multiple required>
+                            <button class="btn btn-info" type="submit">Upload</button>
+                        </div>
+                        <small class="text-muted">Bisa upload satu atau beberapa file.</small>
+                    </form>
+
+                    {{-- list file --}}
+                    @if($files->count())
+                        <div class="list-group">
+                            @foreach($files as $j => $file)
+                                @php
+                                    $url = asset('storage/'.$file->filename);
+                                    $ext = strtolower(pathinfo($file->filename, PATHINFO_EXTENSION));
+                                    $isImage = in_array($ext, ['jpg','jpeg','png','gif','webp']);
+                                    $isPdf = $ext === 'pdf';
+                                @endphp
+
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center gap-2">
+                                        @if($isImage)
+                                            <img src="{{ $url }}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;">
+                                        @endif
+
+                                        {{-- klik nama file -> preview modal --}}
+                                        <button type="button"
+                                                class="btn btn-link p-0 text-decoration-none"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalFile{{ $j }}">
+                                            {{ basename($file->filename) }}
+                                        </button>
+                                    </div>
+
+                                    {{-- tombol hapus file pendukung --}}
+                                    <form action="{{ route('pelanggan.file.destroy', [$dataPelanggan->pelanggan_id, $file->id]) }}"
+                                          method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Hapus file ini?')">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+
+                                {{-- modal preview --}}
+                                <div class="modal fade" id="modalFile{{ $j }}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                                        <div class="modal-content rounded-4 border-0 shadow">
+                                            <div class="modal-body p-2">
+                                                @if($isImage)
+                                                    <img src="{{ $url }}"
+                                                         class="w-100 rounded-3"
+                                                         style="object-fit:contain; max-height:80vh;">
+                                                @elseif($isPdf)
+                                                    <iframe src="{{ $url }}"
+                                                            style="width:100%; height:80vh; border:0; border-radius:8px;">
+                                                    </iframe>
+                                                @else
+                                                    <div class="p-3 text-center text-muted">
+                                                        File ini tidak bisa dipreview langsung.
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             @endforeach
                         </div>
                     @else
-                        <div class="text-muted">Belum ada foto pelanggan.</div>
+                        <div class="text-muted">Belum ada file pendukung.</div>
                     @endif
 
                 </div>

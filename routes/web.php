@@ -54,3 +54,10 @@ Route::delete('/user/{id}/delete-photo', [UserController::class, 'deletePhoto'])
 
 Route::delete('/pelanggan/{id}/foto', [PelangganController::class, 'destroyFoto'])
     ->name('pelanggan.foto.destroy');
+
+Route::post('/pelanggan/{id}/file', [PelangganController::class, 'uploadFilePendukung'])
+    ->name('pelanggan.file.upload');
+
+// hapus file pendukung pelanggan
+Route::delete('/pelanggan/{id}/file/{fileId}', [PelangganController::class, 'destroyFilePendukung'])
+    ->name('pelanggan.file.destroy');
