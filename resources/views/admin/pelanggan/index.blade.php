@@ -1,122 +1,128 @@
 @extends('layouts.admin.app')
 
 @section('content')
-<div class="py-4">
-    <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-        <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-            <li class="breadcrumb-item">
-                <a href="#">
-                    <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                        </path>
-                    </svg>
+    <div class="py-4">
+        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+            <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                <li class="breadcrumb-item">
+                    <a href="#">
+                        <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                    </a>
+                </li>
+                <li class="breadcrumb-item"><a href="#">Pelanggan</a></li>
+            </ol>
+        </nav>
+
+        <div class="d-flex justify-content-between w-100 flex-wrap mb-4">
+            <div>
+                <h1 class="h4">Data Pelanggan</h1>
+                <p class="mb-0">List data seluruh pelanggan</p>
+            </div>
+            <div>
+                <a href="{{ route('pelanggan.create') }}" class="btn btn-success text-white">
+                    <i class="far fa-question-circle me-1"></i> Tambah Pelanggan
                 </a>
-            </li>
-            <li class="breadcrumb-item"><a href="#">Pelanggan</a></li>
-        </ol>
-    </nav>
-
-    <div class="d-flex justify-content-between w-100 flex-wrap mb-4">
-        <div>
-            <h1 class="h4">Data Pelanggan</h1>
-            <p class="mb-0">List data seluruh pelanggan</p>
+            </div>
         </div>
-        <div>
-            <a href="{{ route('pelanggan.create') }}" class="btn btn-success text-white">
-                <i class="far fa-question-circle me-1"></i> Tambah Pelanggan
-            </a>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12 mb-4">
-            <div class="card border-0 shadow mb-4">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        {{-- Filter & Search --}}
-                        <form method="GET" action="{{ route('pelanggan.index') }}" class="mb-3">
-                            <div class="row g-2">
-                                <div class="col-md-2">
-                                    <select name="gender" class="form-select" onchange="this.form.submit()">
-                                        <option value="">All</option>
-                                        <option value="Male" {{ request('gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                                        <option value="Female" {{ request('gender') == 'Female' ? 'selected' : '' }}>Female</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <input type="text" name="search" class="form-control" value="{{ request('search') }}" placeholder="Search" aria-label="Search">
-                                        <button type="submit" class="btn btn-outline-secondary">
-                                            <svg class="icon icon-xxs" fill="currentColor" viewBox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                        </button>
-                                        @if(request('search'))
-                                            <a href="{{ route('pelanggan.index') }}" class="btn btn-outline-danger ms-2">Clear</a>
-                                        @endif
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card border-0 shadow mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            {{-- Filter & Search --}}
+                            <form method="GET" action="{{ route('pelanggan.index') }}" class="mb-3">
+                                <div class="row g-2">
+                                    <div class="col-md-2">
+                                        <select name="gender" class="form-select" onchange="this.form.submit()">
+                                            <option value="">All</option>
+                                            <option value="Male" {{ request('gender') == 'Male' ? 'selected' : '' }}>Male
+                                            </option>
+                                            <option value="Female" {{ request('gender') == 'Female' ? 'selected' : '' }}>
+                                                Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input type="text" name="search" class="form-control"
+                                                value="{{ request('search') }}" placeholder="Search" aria-label="Search">
+                                            <button type="submit" class="btn btn-outline-secondary">
+                                                <svg class="icon icon-xxs" fill="currentColor" viewBox="0 0 20 20"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd"
+                                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg>
+                                            </button>
+                                            @if (request('search'))
+                                                <a href="{{ route('pelanggan.index') }}"
+                                                    class="btn btn-outline-danger ms-2">Clear</a>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
 
-                        {{-- Tabel Data Pelanggan --}}
-                        <table class="table table-centered table-nowrap mb-0 rounded">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th class="border-0">Nomor</th>
-                                    <th class="border-0">First Name</th>
-                                    <th class="border-0">Last Name</th>
-                                    <th class="border-0">Birthday</th>
-                                    <th class="border-0">Gender</th>
-                                    <th class="border-0">Email</th>
-                                    <th class="border-0">Phone</th>
-                                    <th class="border-0 rounded-end">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($dataPelanggan as $index => $item)
+                            {{-- Tabel Data Pelanggan --}}
+                            <table class="table table-centered table-nowrap mb-0 rounded">
+                                <thead class="thead-light">
                                     <tr>
-                                        <td>{{ ($dataPelanggan->currentPage() - 1) * $dataPelanggan->perPage() + $index + 1 }}</td>
-                                        <td>{{ $item->first_name }}</td>
-                                        <td>{{ $item->last_name }}</td>
-                                        <td>{{ $item->birthday }}</td>
-                                        <td>{{ $item->gender }}</td>
-                                        <td>{{ $item->email }}</td>
-                                        <td>{{ $item->phone }}</td>
-                                        <td class="d-flex gap-1">
-
-                                            <a href="{{ route('pelanggan.edit', $item->pelanggan_id) }}" class="btn btn-info btn-sm">
-                                                Edit
-                                            </a>
-                                            <a href="{{ route('pelanggan.show', $item->pelanggan_id) }}" class="btn btn-info btn-sm">
-    Detail Pelanggan
-</a>
-
-                                            <form action="{{ route('pelanggan.destroy', $item->pelanggan_id) }}" method="POST" style="display:inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                            </form>
-                                        </td>
+                                        <th class="border-0">Nomor</th>
+                                        <th class="border-0">First Name</th>
+                                        <th class="border-0">Last Name</th>
+                                        <th class="border-0">Birthday</th>
+                                        <th class="border-0">Gender</th>
+                                        <th class="border-0">Email</th>
+                                        <th class="border-0">Phone</th>
+                                        <th class="border-0 rounded-end">Action</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($dataPelanggan as $index => $item)
+                                        <tr>
+                                            <td>{{ ($dataPelanggan->currentPage() - 1) * $dataPelanggan->perPage() + $index + 1 }}
+                                            </td>
+                                            <td>{{ $item->first_name }}</td>
+                                            <td>{{ $item->last_name }}</td>
+                                            <td>{{ $item->birthday }}</td>
+                                            <td>{{ $item->gender }}</td>
+                                            <td>{{ $item->email }}</td>
+                                            <td>{{ $item->phone }}</td>
+                                            <td class="d-flex gap-1">
 
-                        <div class="mt-3">
-                            {{ $dataPelanggan->links('pagination::simple-bootstrap-5') }}
+                                                <a href="{{ route('pelanggan.edit', $item->pelanggan_id) }}"
+                                                    class="btn btn-info btn-sm">
+                                                    Edit
+                                                </a>
+                                                <a href="{{ route('pelanggan.show', $item->pelanggan_id) }}"
+                                                    class="btn btn-info btn-sm">
+                                                    Detail Pelanggan
+                                                </a>
+
+                                                <form action="{{ route('pelanggan.destroy', $item->pelanggan_id) }}"
+                                                    method="POST" style="display:inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                            <div class="mt-3">
+                                {{ $dataPelanggan->links('pagination::simple-bootstrap-5') }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 @endsection
-

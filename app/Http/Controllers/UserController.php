@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -32,15 +31,15 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'              => 'required',
-            'email'             => 'required|email',
-            'password'          => 'required|min:6',
-            'profile_picture'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name'            => 'required',
+            'email'           => 'required|email',
+            'password'        => 'required|min:6',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data['name'] = $request->name;
-        $data['email']  = $request->email;
-        $data['password']   = Hash::make($request->password);
+        $data['name']     = $request->name;
+        $data['email']    = $request->email;
+        $data['password'] = Hash::make($request->password);
 
         // Upload foto jika ada
         if ($request->hasFile('profile_picture')) {
@@ -70,12 +69,12 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $request->validate([
-            'name'              => 'required',
-            'email'             => 'required|email',
-            'profile_picture'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name'            => 'required',
+            'email'           => 'required|email',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $user->name = $request->name;
+        $user->name  = $request->name;
         $user->email = $request->email;
 
         // Update password hanya jika diisi
@@ -119,21 +118,19 @@ class UserController extends Controller
     }
 
     public function deletePhoto($id)
-{
-    $user = User::findOrFail($id);
+    {
+        $user = User::findOrFail($id);
 
-    // Hapus file dari storage
-    if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
-        Storage::disk('public')->delete($user->profile_picture);
+        // Hapus file dari storage
+        if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
+            Storage::disk('public')->delete($user->profile_picture);
+        }
+
+        // Update field jadi null
+        $user->profile_picture = null;
+        $user->save();
+
+        return back()->with('success', 'Foto berhasil dihapus!');
     }
 
-    // Update field jadi null
-    $user->profile_picture = null;
-    $user->save();
-
-    return back()->with('success', 'Foto berhasil dihapus!');
 }
-
-}
-
-
