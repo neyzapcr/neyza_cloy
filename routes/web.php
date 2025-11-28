@@ -52,3 +52,6 @@ Route::resource('user', UserController::class);
 
 Route::delete('/user/{id}/delete-photo', [UserController::class, 'deletePhoto'])
     ->name('user.deletePhoto');
+
+    Route::delete('/pelanggan/{id}/foto', [PelangganController::class, 'destroyFoto'])
+    ->name('pelanggan.foto.destroy');
