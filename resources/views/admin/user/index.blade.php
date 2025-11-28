@@ -51,35 +51,33 @@
                                     <tr>
                                         <td>
                                             @if ($item->profile_picture)
-    <div class="position-relative d-inline-block"
-        style="width: 50px; height: 50px;">
+                                                <div class="position-relative d-inline-block"
+                                                    style="width: 50px; height: 50px;">
 
-        {{-- Foto --}}
-        <div class="ratio ratio-1x1 rounded-circle overflow-hidden">
-            <img src="{{ Storage::url($item->profile_picture) }}"
-                style="object-fit: cover; width: 100%; height: 100%;">
-        </div>
+                                                    {{-- Foto --}}
+                                                    <div class="ratio ratio-1x1 rounded-circle overflow-hidden">
+                                                        <img src="{{ Storage::url($item->profile_picture) }}"
+                                                            style="object-fit: cover; width: 100%; height: 100%;">
+                                                    </div>
 
-        {{-- Tombol Hapus (muncul saat hover) --}}
-        <form action="{{ route('user.deletePhoto', $item->id) }}"
-              method="POST"
-              class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-              style="background: rgba(0,0,0,0.4); opacity:0; transition:0.2s;"
-              onmouseover="this.style.opacity='1'"
-              onmouseout="this.style.opacity='0'">
-            @csrf
-            @method('DELETE')
+                                                    {{-- Tombol Hapus (muncul saat hover) --}}
+                                                    <form action="{{ route('user.deletePhoto', $item->id) }}" method="POST"
+                                                        class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+                                                        style="background: rgba(0,0,0,0.4); opacity:0; transition:0.2s;"
+                                                        onmouseover="this.style.opacity='1'"
+                                                        onmouseout="this.style.opacity='0'">
+                                                        @csrf
+                                                        @method('DELETE')
 
-            <button type="submit"
-                class="btn btn-danger btn-sm rounded-circle p-1"
-                style="width: 28px; height: 28px; display:flex; justify-content:center; align-items:center;">
-                ✕
-            </button>
-        </form>
+                                                        <button type="submit"
+                                                            class="btn btn-danger btn-sm rounded-circle p-1"
+                                                            style="width: 28px; height: 28px; display:flex; justify-content:center; align-items:center;">
+                                                            ✕
+                                                        </button>
+                                                    </form>
 
-    </div>
-@else
-    
+                                                </div>
+                                            @else
                                                 <span class="text-muted">No picture</span>
                                             @endif
                                         </td>
@@ -109,7 +107,13 @@
                                     </tr>
                                 @endforeach
                             </tbody>
+
+
                         </table>
+
+                    </div>
+                    <div class="mt-3">
+                        {{ $dataUser->links('pagination::simple-bootstrap-5') }}
                     </div>
                 </div>
             </div>

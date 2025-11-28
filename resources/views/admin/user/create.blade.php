@@ -18,16 +18,14 @@
                 <li class="breadcrumb-item active" aria-current="page">Tambah User</li>
             </ol>
         </nav>
-
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
                 <h1 class="h4">Tambah User</h1>
                 <p class="mb-0">Form untuk menambahkan data user baru.</p>
             </div>
             <div>
-                <a href="{{ route('user.index') }}" class="btn btn-primary">
-                    Kembali
-                </a>
+                <a href="{{ route('user.index') }}" class="btn btn-primary"><i class="far fa-question-circle me-1"></i>
+                    Kembali</a>
             </div>
         </div>
     </div>
@@ -36,62 +34,54 @@
         <div class="col-12 mb-4">
             <div class="card border-0 shadow components-section">
                 <div class="card-body">
+                   <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <div class="row mb-4">
+        <div class="col-lg-4 col-sm-6">
 
-                    <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-
-                        <div class="row mb-4">
-                            <div class="col-lg-4 col-sm-6">
-
-                                {{-- Nama --}}
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Nama Lengkap</label>
-                                    <input type="text" name="name" id="name" class="form-control" required>
-                                </div>
-
-                                {{-- Email --}}
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" name="email" id="email" class="form-control" required>
-                                </div>
-
-                                {{-- Password --}}
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" name="password" id="password" class="form-control" required>
-                                </div>
-
-                                {{-- Konfirmasi Password --}}
-                                <div class="mb-3">
-                                    <label for="password_confirmation" class="form-label">Password Confirmation</label>
-                                    <input type="password" name="password_confirmation" id="password_confirmation"
-                                        class="form-control" required>
-                                </div>
-
-                                {{-- Foto Profil --}}
-                                <div class="mb-3">
-                                    <label for="profile_picture" class="form-label">Foto Profil</label>
-                                    <input type="file" name="profile_picture" id="profile_picture"
-                                        class="form-control">
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="d-flex gap-2 mt-3">
-                            <button type="submit" class="btn btn-primary px-4">
-                                Simpan
-                            </button>
-
-                            <a href="{{ route('user.index') }}" class="btn btn-outline-secondary px-4">
-                                Batal
-                            </a>
-                        </div>
-
-                    </form>
-
-                </div>
+            {{-- Nama --}}
+            <div class="mb-3">
+                <label for="name" class="form-label">Nama Lengkap</label>
+                <input type="text" name="name" id="name" class="form-control" required>
             </div>
+
+            {{-- Email --}}
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" id="email" class="form-control" required>
+            </div>
+
+            {{-- Password --}}
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+
+            {{-- Konfirmasi Password --}}
+            <div class="mb-3">
+                <label for="password_confirmation" class="form-label">Password Confirmation</label>
+                <input type="password" name="password_confirmation" id="password_confirmation"
+                       class="form-control" required>
+            </div>
+
         </div>
+    </div>
+
+    {{-- Tombol --}}
+    <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-primary px-4">
+            Simpan
+        </button>
+
+        <a href="{{ route('user.index') }}" class="btn btn-outline-secondary px-4">
+            Batal
+        </a>
+    </div>
+</form>
+
+        </div>
+
+    </div>
+    </div>
     </div>
 @endsection
