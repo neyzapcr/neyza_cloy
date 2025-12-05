@@ -43,15 +43,7 @@ Route::get('/pegawai', [PegawaiController::class, 'index']);
 Route::post('question/store', [QuestionController::class, 'store'])
     ->name('question.store');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard');
-
 Route::resource('pelanggan', PelangganController::class);
-
-Route::resource('user', UserController::class);
-
-Route::delete('/user/{id}/delete-photo', [UserController::class, 'deletePhoto'])
-    ->name('user.deletePhoto');
 
 Route::delete('/pelanggan/{id}/foto', [PelangganController::class, 'destroyFoto'])
     ->name('pelanggan.foto.destroy');
@@ -69,3 +61,15 @@ Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post')
 
 // Logout Route
 Route::get('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+Route::group(['middleware' => ['checkislogin']], function() {
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+});
+
+Route::group(['middleware' => ['checkislogin', 'checkrole:super admin']], function () {
+    Route::resource('user', UserController::class);
+
+    Route::delete('/user/{id}/delete-photo', [UserController::class, 'deletePhoto'])
+        ->name('user.deletePhoto');
+});

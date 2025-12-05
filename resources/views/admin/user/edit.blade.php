@@ -65,6 +65,30 @@
                                         class="form-control shadow-sm rounded-3" required>
                                 </div>
 
+                                {{-- Role Dropdown --}}
+                                <div class="mb-3">
+                                    <label for="role" class="form-label fw-semibold">Role</label>
+                                    <select name="role" id="role"
+                                            class="form-select shadow-sm rounded-3" required>
+                                        <option value="">-- Pilih Role --</option>
+                                        <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>
+                                            Admin
+                                        </option>
+                                        <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>
+                                            User
+                                        </option>
+                                        <option value="super admin" {{ old('role', $user->role) == 'super admin' ? 'selected' : '' }}>
+                                            Super Admin
+                                        </option>
+                                        <option value="manager" {{ old('role', $user->role) == 'manager' ? 'selected' : '' }}>
+                                            Manager
+                                        </option>
+                                        <option value="administrator" {{ old('role', $user->role) == 'administratpr' ? 'selected' : '' }}>
+                                            Administrator
+                                        </option>
+                                    </select>
+                                </div>
+
                                 {{-- Password --}}
                                 <div class="mb-3">
                                     <label for="password" class="form-label fw-semibold">

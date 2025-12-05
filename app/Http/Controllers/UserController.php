@@ -40,7 +40,7 @@ class UserController extends Controller
         $data['name']     = $request->name;
         $data['email']    = $request->email;
         $data['password'] = Hash::make($request->password);
-
+        $data['role']     = $request->role;
         // Upload foto jika ada
         if ($request->hasFile('profile_picture')) {
             $data['profile_picture'] = $request->file('profile_picture')
@@ -76,6 +76,7 @@ class UserController extends Controller
 
         $user->name  = $request->name;
         $user->email = $request->email;
+        $user->role  = $request->role;
 
         // Update password hanya jika diisi
         if ($request->password) {

@@ -68,11 +68,23 @@
                                         class="form-control" required>
                                 </div>
 
+                                {{-- Role --}}
+                                <div class="mb-3">
+                                    <label for="role" class="form-label">Role</label>
+                                    <select name="role" id="role" class="form-control" required>
+                                        <option value="">-- Pilih Role --</option>
+                                        <option value="super_admin">Super Admin</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="manager">Manager</option>
+                                        <option value="staff">Staff</option>
+                                        <option value="user">User</option>
+                                    </select>
+                                </div>
+
                                 {{-- Foto Profil --}}
                                 <div class="mb-3">
                                     <label for="profile_picture" class="form-label">Foto Profil</label>
-                                    <input type="file" name="profile_picture" id="profile_picture"
-                                        class="form-control">
+                                    <input type="file" name="profile_picture" id="profile_picture" class="form-control">
                                 </div>
 
                             </div>
