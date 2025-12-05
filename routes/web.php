@@ -8,6 +8,7 @@ use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -61,3 +62,10 @@ Route::post('/pelanggan/{id}/file', [PelangganController::class, 'uploadFilePend
 // hapus file pendukung pelanggan
 Route::delete('/pelanggan/{id}/file/{fileId}', [PelangganController::class, 'destroyFilePendukung'])
     ->name('pelanggan.file.destroy');
+
+// Login Routes
+Route::get('login', [AuthController::class, 'index'])->name('auth.login');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post');
+
+// Logout Route
+Route::get('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
